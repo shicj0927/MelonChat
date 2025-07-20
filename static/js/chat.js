@@ -5,9 +5,21 @@ function logout(){
     window.location.href = "/";
 }
 
-function displayMessage(user, message, type, color = "black") {
+// 渲染函数
+function renderMarkdown(text) {
+    mdr.content = text;
+    return mdr.parse;
+}
+
+function displayMessage(user, message, type, color = "black", time) {
+    if (type == "md") {
+        message = renderMarkdown(message);
+    }
     $('#chat-area').append(
-        '<div class="mb-2"><strong style="color:'+color+';">'+user+'</strong>: '+message+'</div>'
+        '<div class="mb-2 msg-content" style="word-break: break-all;;overflow:hidden;white-space: normal;width=10px;">\
+        <div class="msg-inner"><strong style="color:'+color+';">'+user+'</strong><a style="float:right;">'+time+'</a></div>\
+        <div class="horizontal-line"></div><div class="msg-inner">'
+        +message+'</div></div>'
     );
     $('#chat-area').scrollTop($('#chat-area')[0].scrollHeight);
 }
@@ -91,7 +103,7 @@ $(document).ready(function(){
             if (data.length > 0) {
                 data.forEach(function(msg) {
                     console.log(msg[2],username);
-                    displayMessage(msg[2], msg[3], msg[4], msg[2] == username ? "blue" : "black");
+                    displayMessage(msg[2], msg[3], msg[4], msg[2] == username ? "blue" : "black", msg[1]);
                 });
             }
         },
@@ -116,7 +128,7 @@ $(document).ready(function(){
                             console.log("New messages: ", data);
                             data = JSON.parse(data);
                             data.forEach(function(msg) {
-                                displayMessage(msg[2], msg[3], msg[4], msg[2] == username ? "blue" : "black");
+                                displayMessage(msg[2], msg[3], msg[4], msg[2] == username ? "blue" : "black", msg[1]);
                             });
                             msgNum = parseInt(data[data.length - 1][0]);
                         },
@@ -218,4 +230,34 @@ function sendFile() {
         }
     };
     input.click();
+}
+
+function insertMarkdown() {
+    document.getElementById('markdown-box-container').style.display = 'block';
+    editor.content = '';
+}
+
+function sendMarkdown() {
+    var text = editor.content;
+    if (text) {
+        $.ajax({
+            url: "/api/sendMarkdown/",
+            type: "POST",
+            data: text,
+            contentType: "application/text",
+            success: function(data) {
+                console.log(data)
+                if(data != "OK"){
+                    alert("Failed to send message. Please try again later.")
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error sending message:", error);
+                alert("Failed to send message. Please try again later.");
+            }
+        });
+    }
+    else {
+        alert("Please enter a message before sending.");
+    }
 }

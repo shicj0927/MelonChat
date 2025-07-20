@@ -34,6 +34,10 @@ def home():
 def chat():
     return render_template('chat.html')
 
+@app.route('/help/')
+def showhelp():
+    return render_template('help.html')
+
 def checkLogin():
     username = request.cookies.get("username")
     password = request.cookies.get("password")
@@ -138,7 +142,24 @@ def sendMsg():
         content = request.get_data(as_text = True)
         print("content:",content)
         if content:
-            result = sqlExecute("INSERT INTO messages VALUES (NULL,sysdate(),%s,%s,'text')", (username, content))
+            result = sqlExecute("INSERT INTO messages VALUES (NULL,sysdate(),%s,%s,'html')", (username, content))
+            if result[0]:
+                return "OK"
+            else:
+                return "Server error"
+        else:
+            return "server error"
+
+@app.route('/api/sendMarkdown/', methods=['POST'])
+def sendMarkdown():
+    if not checkLogin():
+        return "Login error"
+    else:
+        username = request.cookies.get("username")
+        content = request.get_data(as_text = True)
+        print("content:",content)
+        if content:
+            result = sqlExecute("INSERT INTO messages VALUES (NULL,sysdate(),%s,%s,'md')", (username, content))
             if result[0]:
                 return "OK"
             else:
@@ -238,4 +259,4 @@ def getFile(id):
         return "Server error"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True, port=5000)
