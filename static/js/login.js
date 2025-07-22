@@ -6,7 +6,7 @@ $(document).ready(function(){
         $.get("/api/login", function(data) {
             console.log("Login: ", data);
             if (data == "OK") {
-                window.location.href = "/chat";
+                window.location.href = "/publicMsg";
             }
         }, "text");
     }

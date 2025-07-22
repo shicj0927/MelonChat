@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🍈 Melon Chat</title>
+    <!-- <link rel="icon" type="image/x-icon" href="/img/favicon.ico"> -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/markdown-palettes.min.js"></script>
+    <link href="/static/css/markdown-palettes.css" rel="stylesheet">
+    <!-- <link href="/static/css/github-markdown.min.css" rel="stylesheet"> -->
+    <!-- <script src="/static/js/markdown-it.min.js"></script> -->
+    <!-- <script src="/static/js/highlight.min.js"></script> -->
+    <link href="/static/css/highlight.min.css" rel="stylesheet">
+    <!-- <script src="/static/js/bundle.js"></script> -->
+    <script src="/static/js/chat.js"></script>
+    <link href="/static/css/katex.min.css" rel="stylesheet">
+    <script src="/static/js/katex.min.js"></script>
+    <style>
+        img {
+            max-width: 100%;
+            max-height: 50%;
+        }
+        p {
+            margin-top: 0px;
+            margin-bottom: 0px; /* 调整底部间距 */
+        }
+        pre {
+            border: 1px solid #ccc;
+        }
+        .msg-content {
+            border: 1px solid #000;
+            padding-block: 10px;
+        }
+        .msg-inner {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        .horizontal-line {
+            height: 1px; /* 线的厚度 */
+            background-color: #aaa; /* 线的颜色 */
+            margin: 10px 0; /* 上下边距 */
+        }
+        .msg-block {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        #sidebar {
+            position: absolute;
+            top: 66px;
+            left: 0;
+            min-width: 150px;
+            max-width: 150px;
+            height: calc(100% - 66px);
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            transition: width 0.2s, min-width 0.2s;
+            overflow-x: hidden;
+            z-index: 10;
+        }
+        #sidebar.collapsed {
+            display: none;
+            width: 0px;
+            min-width: 0px;
+        }
+        #sidebar .sidebar-content {
+            display: block;
+            padding: 1rem;
+        }
+        #sidebar.collapsed .sidebar-content {
+            display: none;
+        }
+        #sidebar-toggle {
+            position: absolute;
+            top: 10px;
+            right: -40px;
+            z-index: 99;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px 0 0 5px;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 80vw;
+                min-width: 0px;
+            }
+            #sidebar.collapsed {
+                width: 0px;
+            }
+        }
+        .main-chat-area {
+            margin-left: 150px;
+            transition: margin-left 0.2s;
+            height: calc(100% - 66px);
+        }
+        .main-chat-area.sidebar-collapsed {
+            margin-left: 0px;
+        }
+        #chat-area {
+            word-break: break-all;
+            white-space: normal;
+        }
+        .alert-mask {
+            position: fixed;
+            background: #000;
+            opacity: 0.5;
+            z-index: 888;
+            width: 100%;
+            height: 100%;
+        }
+        .alert-box {
+            position: fixed;
+            top: 10%;
+            left: 10%;
+            right: 90%;
+            bottom: 90%;
+            width: 80%;
+            height: 80%;
+            background: #fff;
+            z-index: 999;
+            /* border-radius: 1rem; */
+        }
+    </style>
+</head>
+<body>
+<div style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;">
+    <nav class="navbar navbar-dark bg-success">
+        <span class="navbar-brand mb-0 h1" style="position: absolute;left: 50%;transform: translateX(-50%);">🍈 Melon Chat</span>
+        <span class="navbar-brand mb-0 h1" style="position: absolute;left: 10px;transform: translateX(0%);" onclick="toggleSidebar()">
+            <button class="btn btn-success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layout-text-sidebar-reverse" viewBox="0 0 16 16">
+                    <path d="M12.5 3a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zm0 3a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zm.5 3.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5m-.5 2.5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1z"/>
+                    <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zM4 1v14H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm1 0h9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5z"/>
+                </svg>
+            </button>
+        </span>
+        <span class="navbar-brand mb-0 h1 ms-auto">
+            <button class="btn btn-danger" onclick="logout()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                </svg>
+                登出
+            </button>
+        </span>
+    </nav>
+    <!-- 左侧侧边栏 -->
+    <div id="sidebar">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action" style="background-color: #198754; color: #fff">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                </svg>
+                聊天室
+            </a>
+            <!-- <a href="#" class="list-group-item list-group-item-action">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                </svg>
+                个人中心
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+                查找用户
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
+                    <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                    <path d="m2.165 15.803.02-.004c1.83-.363 2.90-.842 3.468-1.105A9 9 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.4 10.4 0 0 1-.524 2.318l-.003.011a11 11 0 0 1-.244.637c-.079.186.074.394.273.362a22 22 0 0 0 .693-.125m.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6-3.004 6-7 6a8 8 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a11 11 0 0 0 .398-2"/>
+                </svg>
+                私信
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                    <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                    <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z"/>
+                </svg>
+                图片管理
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-files" viewBox="0 0 16 16">
+                    <path d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1M3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+                </svg>
+                文件管理
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10.5 1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4H1.5a.5.5 0 0 1 0-1H10V1.5a.5.5 0 0 1 .5-.5M12 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m-6.5 2A.5.5 0 0 1 6 6v1.5h8.5a.5.5 0 0 1 0 1H6V10a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5M1 8a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 1 8m9.5 2a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V13H1.5a.5.5 0 0 1 0-1H10v-1.5a.5.5 0 0 1 .5-.5m1.5 2.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
+                </svg>
+                系统管理
+            </a> -->
+            <a href="/help" class="list-group-item list-group-item-action">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.475 5.458c-.284 0-.514-.237-.47-.517C4.28 3.24 5.576 2 7.825 2c2.25 0 3.767 1.36 3.767 3.215 0 1.344-.665 2.288-1.79 2.973-1.1.659-1.414 1.118-1.414 2.01v.03a.5.5 0 0 1-.5.5h-.77a.5.5 0 0 1-.5-.495l-.003-.2c-.043-1.221.477-2.001 1.645-2.712 1.03-.632 1.397-1.135 1.397-2.028 0-.979-.758-1.698-1.926-1.698-1.009 0-1.71.529-1.938 1.402-.066.254-.278.461-.54.461h-.777ZM7.496 14c.622 0 1.095-.474 1.095-1.09 0-.618-.473-1.092-1.095-1.092-.606 0-1.087.474-1.087 1.091S6.89 14 7.496 14"/>
+                </svg>
+                使用说明
+            </a>
+        </div>
+    </div>
+    <!-- 主聊天区 -->
+    <div id="main-chat-area" class="main-chat-area">
+        <div class="container d-flex flex-column" style="height: 100%;">
+            <div id="chat-area" class="flex-grow-1 border rounded p-3 my-3 overflow-auto bg-light">
+            </div>
+            <form class="d-flex">
+                <input type="text" style="display:none">
+                <input type="text" id="chat-input" class="form-control me-2" placeholder="输入消息......" autocomplete="off">
+                <button type="button" onclick="sendMsg()" class="btn btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+
+                    </svg>
+                </button>
+                <div class="dropup">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="sendImg()" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z"/>
+                            </svg>
+                            图片
+                        </a></li>
+                        <li><a class="dropdown-item" onclick="sendFile()" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark" viewBox="0 0 16 16">
+                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                            </svg>
+                            文件
+                        </a></li>
+                        <li><a class="dropdown-item" onclick="insertMarkdown()" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-richtext" viewBox="0 0 16 16">
+                                <path d="M7 4.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m-.861 1.542 1.33.886 1.854-1.855a.25.25 0 0 1 .289-.047l1.888.974V7.5a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5V7s1.54-1.274 1.639-1.208M5 9a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/>
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/>
+                            </svg>
+                            Markdown
+                        </a></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;" id="markdown-box-container">
+    <!-- Markdown输入框 -->
+    <div class="alert-mask" id="alert-mask"></div>
+    <div class="alert-box" id="alert-box">
+        <div style="height: calc(100% - 60px);">
+            <div id="editor"></div>
+        </div> 
+        <div style="padding: 10px; text-align: right;">
+            <button type="button" class="btn btn-danger" onclick="hideBox()">放弃</button>
+            <button type="button" class="btn btn-success" onclick="sendMarkdown();hideBox()">确定</button>
+        </div>
+        <script>
+            var editor = new MarkdownPalettes('#editor');
+            document.getElementById('markdown-box-container').style.display = 'none';
+            function hideBox() {
+                document.getElementById('markdown-box-container').style.display = 'none';
+            }
+        </script>
+    </div>
+</div>
+<div style="position: absolute;top: 0;left: 0;right: 0;bottom: 0; display: none;" id="markdown-box-container">
+    <!-- Markdown渲染器 -->
+    <div class="alert-box" id="alert-box">
+        <div id="mdr"></div>
+        <script>
+            var mdr = new MarkdownPalettes('#mdr');
+        </script>
+    </div>
+</div>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainArea = document.getElementById('main-chat-area');
+        const icon = document.getElementById('sidebar-toggle-icon');
+        sidebar.classList.toggle('collapsed');
+        mainArea.classList.toggle('sidebar-collapsed');
+    }
+</script>
+</body>
+</html>
