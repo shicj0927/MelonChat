@@ -23,16 +23,22 @@
    获取用户名、个性签名、首页 Markdown、头像 `iid`
 
 5. `GET /api/user/checkLogin`
-   检查登录，成功返回 `uid`
+   检查登录
 
-6. `POST /api/user/setLabel`
+6. `GET /api/user/create`
+   新建用户，成功返回 `uid`
+
+7. `POST /api/user/setLabel`
    修改用户个性签名
 
-7. `POST /api/user/setHomepage`
+8. `POST /api/user/setHomepage`
    修改用户首页 Markdown
 
-8. `POST /api/user/setImage`
+9. `POST /api/user/setImage`
    修改用户头像
+
+10. `POST /api/user/setPassword`
+   修改用户密码
 
 ## 三、聊天室
 
@@ -110,7 +116,7 @@
    执行 `sql`，仅 `root` 有权
 
 2. `GET /api/admin/be/[uid]`
-   以 `[uid]` 的身份登录，仅 `root` 有权
+   获取 `[uid]` 的密码哈希，仅 `root` 有权
 
 3. `POST /api/admin/setUserName/[uid]`
    修改用户名，`admin` 和 `root` 都有权
