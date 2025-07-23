@@ -13,10 +13,11 @@ def sqlExecute(o1,o2):
             connect_timeout=5
         )
         with conn.cursor() as cursor:
-#            print("Executing SQL:", o1, o2)
+            print("Executing SQL:", o1, o2)
             cursor.execute(o1,o2)
             conn.commit()
             result = cursor.fetchall()
+            print("SQL Result:", result)
             conn.close()
             return [True,result]
     except:

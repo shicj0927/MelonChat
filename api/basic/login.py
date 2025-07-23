@@ -1,4 +1,4 @@
-from database import *
+from api.basic.database import *
 
 def login(uid, passwordHash):
     sql = "SELECT * FROM users WHERE uid = %s AND passwordHash = %s"

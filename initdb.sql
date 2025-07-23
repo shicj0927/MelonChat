@@ -3,12 +3,12 @@
 -- 本脚本会删除现有的表并重新创建，如果有老版本数据，请先备份！！！
 -- 可以使用本脚本进行重置，将会清空所有原有数据
 
-drop table if exists users;
-drop table if exists publicMsg;
-drop table if exists chat;
-drop table if exists files;
-drop table if exists images;
-drop table if exists notes;
+drop table users;
+drop table publicMsg;
+drop table chat;
+drop table files;
+drop table images;
+drop table notes;
 
 create table users(
     uid int primary key auto_increment,
@@ -25,7 +25,7 @@ create table publicMsg(
     uid int,
     time datetime,
     msg varchar(20000),
-    type varchar(255),
+    type varchar(255)
 );
 
 create table chat(
@@ -43,7 +43,7 @@ create table files(
     time datetime,
     name varchar(255),
     data longblob,
-    deleted boolean,
+    deleted boolean
 );
 
 create table images(
@@ -52,7 +52,7 @@ create table images(
     time datetime,
     name varchar(255),
     data longblob,
-    deleted boolean,
+    deleted boolean
 );
 
 create table notes(
@@ -61,5 +61,5 @@ create table notes(
     time datetime,
     title varchar(255),
     content longtext,
-    deleted boolean,
-)
+    deleted boolean
+);

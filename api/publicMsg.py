@@ -1,3 +1,3 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 
-publicMsg_bp = Blueprint('auth', __name__)
+publicMsg_bp = Blueprint('publicMsg', __name__)

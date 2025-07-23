@@ -1,8 +1,12 @@
 from flask import Blueprint, jsonify, request
-from basic.database import *
-from basic.login import *
+from api.basic.database import *
+from api.basic.login import *
 
-user_bp = Blueprint('auth', __name__)
+user_bp = Blueprint('user', __name__)
+
+@user_bp.route('/', methods=['GET'])
+def index():
+    return jsonify({'status': 'success', 'message': 'api.user is running'})
 
 @user_bp.route('/getName/<int:uid>', methods=['GET'])
 def getName(uid):
@@ -95,8 +99,9 @@ def checkLogin():
 
 @user_bp.route('/create', methods=['POST'])
 def createUser():
-    username = request.cookies.get('username')
+    username = request.json.get('username')
     passwordHash = request.cookies.get('passwordHash')
+    print("Creating user:", username, passwordHash)
     querySql = "SELECT * FROM users WHERE username = %s"
     queryParams = (username,)
     result = sqlExecute(querySql, queryParams)
@@ -104,11 +109,18 @@ def createUser():
         return jsonify({'status': 'fail', 'message': '用户名已存在'}), 400
     elif not result[0]:
         return jsonify({'status': 'fail', 'message': result[1]}), 500
-    insertSql = "INSERT INTO users (username, passwordHash) VALUES (%s, %s) RETURNING uid"
+    insertSql = "INSERT INTO users (username, passwordHash) VALUES (%s, %s)"
     insertParams = (username, passwordHash)
     insertResult = sqlExecute(insertSql, insertParams)
     if insertResult[0]:
-        uid = insertResult[1][0][0]
+        uidSql = "SELECT uid FROM users WHERE username = %s"
+        uidParams = (username,)
+        uidResult = sqlExecute(uidSql, uidParams)
+        uid = None
+        if uidResult[0] and uidResult[1]:
+            uid = uidResult[1][0][0]
+        else:
+            return jsonify({'status': 'fail', 'message': uidResult[1]}), 500
         return jsonify({'status': 'success', 'uid': uid, 'message': '用户创建成功'}), 200
     else:
         return jsonify({'status': 'fail', 'message': insertResult[1]}), 500
