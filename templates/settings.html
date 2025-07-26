@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MelonChat</title>
+        <link rel="stylesheet" href="css/settings.css">
+        <link rel="stylesheet" href="css/bootstrap-icons.min.css">
+        <script src="js/markdown-palettes.min.js"></script>
+        <link href="css/markdown-palettes.css" rel="stylesheet">
+        <link href="css/katex.min.css" rel="stylesheet">
+        <script src="js/katex.min.js"></script>
+    </head>
+    <body>
+        <div class="app">
+            <div class="title-box">
+                个人设置
+            </div>
+            <div class="main-box">
+                <p class="box-title">主页设置</p>
+                个性签名：
+                <input placeholder="输入个性签名">
+                <br>
+                <!-- 个人主页：
+                <br> -->
+                <div style="height: 10px"></div>
+                <div class="md-editor">
+                    <div id="markdown"></div>
+                    <script>
+                        var editor=new MarkdownPalettes('#markdown');
+                    </script>
+                </div>
+                <div style="height: 10px"></div>
+                <button class="btn-blue">
+                    保存设置
+                </button>
+                <div style="height: 20px"></div>
+            </div>
+            <div style="height: 20px"></div>
+            <div class="main-box">
+                <p class="box-title">修改密码</p>
+                旧密码：
+                <input placeholder="输入旧密码">
+                <div style="height: 10px"></div>
+                新密码：
+                <input placeholder="输入新密码">
+                <div style="height: 10px"></div>
+                <button class="btn-blue">
+                    保存设置
+                </button>
+                <div style="height: 20px"></div>
+            </div>
+            <div style="height: 20px"></div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,129 @@
+@import "color.css";
+
+@font-face {
+    font-family: 'PageFont';
+    src: url('fonts/lxgwwenkaigbscreen.woff') format('truetype');
+}
+
+body{
+    font-family: 'PageFont', sans-serif;
+    background-color: var(--login-bg-color);
+}
+
+button{
+    font-family: 'PageFont', sans-serif;
+}
+
+input{
+    font-family: 'PageFont', sans-serif;
+}
+
+.app{
+    width: 320px;
+    height: 440px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--app-bk);
+    /* border: 1px solid; */
+}
+
+.title{
+    width: 200px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    left: 60px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 30px;
+    /* border: 1px solid; */
+}
+
+.pic{
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 70px;
+    left: 120px;
+    background-color: var(--theme-color-b);
+    /* border: 1px solid; */
+}
+
+.password{
+    width: 254px;
+    height: 40px;
+    top: 170px;
+    left: 33px;
+    position: absolute;
+    /* border: 1px solid #666; */
+    background-color: var(--theme-color-b);
+}
+
+.username{
+    width: 254px;
+    height: 40px;
+    top: 222px;
+    left: 33px;
+    position: absolute;
+    /* border: 1px solid #666; */
+    background-color: var(--theme-color-b);
+}
+
+.login{
+    width: 256px;
+    height: 36px;
+    top: 280px;
+    left: 32px;
+    position: absolute;
+    /* border: 1px solid; */
+}
+
+.reg{
+    width: 256px;
+    height: 36px;
+    top: 320px;
+    left: 32px;
+    position: absolute;
+    /* border: 1px solid; */
+}
+
+button{
+    text-align: center;
+    background-color: var(--button-color);
+    color: #fff;
+    line-height: 32px;
+    font-size: 16px;
+    border: none;
+}
+
+button:hover{
+    background-color: var(--button-hover-color);
+}
+
+.notice{
+    width: 256px;
+    height: 30px;
+    top: 380px;
+    left: 32px;
+    position: absolute;
+    text-align: center;
+    /* border: 1px solid; */
+}
+
+input{
+    width: calc(100% - 24px);
+    height: calc(100% - 6px);
+    font-size: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--c1);
+    border: none; 
+    outline: none;
+}
+
+.link{
+    text-decoration: none;
+    color: var(--button-color);
+}

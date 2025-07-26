@@ -1,0 +1,51 @@
+@import "color.css";
+
+@font-face {
+    font-family: 'PageFont';
+    src: url('fonts/lxgwwenkaigbscreen.woff') format('truetype');
+}
+
+body{
+    font-family: 'PageFont', sans-serif;
+    background-color: var(--app-bk);
+}
+
+button{
+    font-family: 'PageFont', sans-serif;
+}
+
+input{
+    font-family: 'PageFont', sans-serif;
+}
+
+.app{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--app-bk);
+    /* border: 1px solid; */
+}
+
+.title-box{
+    position: absolute;
+    top: 10px;
+    left: 5%;
+    font-size: 40px;
+}
+
+.content-box{
+    width: calc(90% - 20px);
+    height: auto;
+    position: relative;
+    top: 60px;
+    left: 5%;
+    padding: 10px;
+    border: 1px solid var(--line);
+}
+
+p{
+  text-indent: 2em;
+}

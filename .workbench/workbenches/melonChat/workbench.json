@@ -1,0 +1,34 @@
+{
+  "id": "67cb7a29-c44f-4f89-92a6-22e1ace69d8b",
+  "name": "MelonChat",
+  "description": "MelonChat",
+  "requests": [],
+  "collections": [
+    {
+      "id": "d9fa1eb7-bf11-4cae-bef4-0aa58d68fa51",
+      "name": "1",
+      "requests": [
+        {
+          "id": "6232aa14-96f6-49e2-a23d-6a5a5912147f",
+          "name": "user",
+          "type": "HTTP",
+          "data": {
+            "authorization": {
+              "type": "none"
+            },
+            "method": "GET",
+            "url": "https://api.integrationbench.com/",
+            "headers": [],
+            "headersAutoRefresh": false,
+            "parameters": [],
+            "parametersAutoRefresh": false,
+            "body": {
+              "type": "raw",
+              "body": "Hello world!"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

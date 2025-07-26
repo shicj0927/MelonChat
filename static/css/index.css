@@ -1,0 +1,19 @@
+@import "color.css";
+
+@font-face {
+    font-family: 'PageFont';
+    src: url('fonts/lxgwwenkaigbscreen.woff') format('truetype');
+}
+
+body{
+    font-family: 'PageFont', sans-serif;
+    background-color: #fff;
+}
+
+button{
+    font-family: 'PageFont', sans-serif;
+}
+
+input{
+    font-family: 'PageFont', sans-serif;
+}

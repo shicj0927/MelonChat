@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MelonChat</title>
+        <link rel="stylesheet" href="css/MelonChatIndex.css">
+        <link rel="stylesheet" href="css/bootstrap-icons.min.css">
+    </head>
+    <body>
+        <div class="app">
+            <div class="left-bar">
+                <br>
+                <div class="left-bar-text">
+                    <a>Melon</a><br>
+                    <a>Chat</a>
+                </div>
+                <br>
+                <button class="left-bar-item-1" onclick="buttonClick('chat')" id="chat">
+                    <i class="bi bi-chat-left-dots"></i>
+                </button>
+                <button class="left-bar-item-0" onclick="buttonClick('user')" id="user">
+                    <i class="bi bi-person"></i>
+                </button>
+                <button class="left-bar-item-0" onclick="buttonClick('files')" id="files">
+                    <i class="bi bi-hdd"></i>
+                </button>
+                <button class="left-bar-item-0" onclick="buttonClick('images')" id="images">
+                <i class="bi bi-images"></i>
+                </button>
+                <button class="left-bar-item-0" onclick="buttonClick('pastes')" id="pastes">
+                    <i class="bi bi-clipboard-check"></i>
+                </button>
+                <button class="left-bar-item-0" onclick="buttonClick('settings')" id="settings">
+                    <i class="bi bi-sliders"></i>
+                </button>
+                <button class="left-bar-item-0" onclick="buttonClick('help')" id="help">
+                    <i class="bi bi-question-circle"></i>
+                </button>
+                <button class="left-bar-item-0" onclick="buttonClick('admin')" id="admin">
+                    <i class="bi bi-tools"></i>
+                </button>
+            </div>
+            <div class="content">
+                <iframe class="content-frame" src="chat.html" id="iframe"></iframe>
+            </div>
+            <div class="left-bar-line"></div>
+        </div>
+        <script>
+            function buttonClick(o) {
+                fm=document.getElementById("iframe");
+                chat=document.getElementById("chat");
+                user=document.getElementById("user");
+                files=document.getElementById("files");
+                images=document.getElementById("images");
+                pastes=document.getElementById("pastes");
+                settings=document.getElementById("settings");
+                help=document.getElementById("help");
+                admin=document.getElementById("admin");
+                chat.className="left-bar-item-0";
+                user.className="left-bar-item-0";
+                files.className="left-bar-item-0";
+                images.className="left-bar-item-0";
+                pastes.className="left-bar-item-0";
+                settings.className="left-bar-item-0";
+                help.className="left-bar-item-0";
+                admin.className="left-bar-item-0";
+                if(o=="chat"){
+                    chat.className="left-bar-item-1";
+                    fm.src="chat.html";
+                }
+                else if(o=="user"){
+                    user.className="left-bar-item-1";
+                    fm.src="user.html";
+                }
+                else if(o=="files"){
+                    files.className="left-bar-item-1";
+                    fm.src="files.html";
+                }
+                else if(o=="images"){
+                    images.className="left-bar-item-1";
+                    fm.src="images.html";
+                }
+                else if(o=="pastes"){
+                    pastes.className="left-bar-item-1";
+                    fm.src="pastes.html";
+                }
+                else if(o=="settings"){
+                    settings.className="left-bar-item-1";
+                    fm.src="settings.html";
+                }
+                else if(o=="help"){
+                    help.className="left-bar-item-1";
+                    fm.src="help.html";
+                }
+                else if(o=="admin"){
+                    admin.className="left-bar-item-1";
+                    fm.src="admin.html";
+                }
+            }
+        </script>
+    </body>
+</html>

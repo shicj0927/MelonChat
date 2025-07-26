@@ -24,7 +24,7 @@ create table publicMsg(
     mid int primary key auto_increment,
     uid int,
     time datetime,
-    msg varchar(20000),
+    msg varchar(10009),
     type varchar(255)
 );
 
@@ -33,7 +33,7 @@ create table chat(
     sender int,
     receiver int,
     time datetime,
-    msg varchar(20000),
+    msg varchar(10009),
     type varchar(255)
 );
 

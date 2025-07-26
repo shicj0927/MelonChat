@@ -1,0 +1,167 @@
+@import "color.css";
+
+@font-face {
+    font-family: 'PageFont';
+    src: url('fonts/lxgwwenkaigbscreen.woff') format('truetype');
+}
+
+body{
+    font-family: 'PageFont', sans-serif;
+    background-color: #fff;
+}
+
+button{
+    font-family: 'PageFont', sans-serif;
+}
+
+textarea{
+    font-family: 'PageFont', sans-serif;
+}
+
+.app{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--app-bk);
+    overflow: hidden;
+    /* border: 1px solid; */
+}
+
+.area-line{
+    width: 100%;
+    height: 1px;
+    background-color: var(--line);
+}
+
+.head-area{
+    width: calc(100% - 20px);
+    height: 40px;
+    font-size: 20px;
+    line-height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--message-head-area);
+}
+
+
+.message-area{
+    width: 100%;
+    height: calc(70vh - 29px);
+    background-color: var(--message-body-area);
+}
+
+.input-area{
+    width: 100%;
+    height: calc(30vh - 13px);
+    background-color: var(--theme-color-b);
+    background-color: var(--message-input-area);
+}
+
+.msg{
+    margin-bottom: 15px;
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.msg-send{
+    width: fit-content;
+    max-width: 60%;
+    align-self: flex-end;
+    margin-left: auto;
+    background-color: var(--msg-send-b);
+    color: var(--msg-send-f);
+    right: 60px;
+}
+
+.msg-rec{
+    width: fit-content;
+    max-width: 60%;
+    align-self: flex-start;
+    margin-right: auto;
+    background-color: var(--msg-rec-b);
+    color: var(--msg-rec-f);
+    left: 60px;
+}
+
+.sender{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: calc(100% - 50px);
+    background-color: gray;
+    color: #fff;
+    font-size: 35px;
+}
+
+.receiver{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 10px;
+    background-color: gray;
+    color: #fff;
+    font-size: 35px;
+    text-align: right;
+}
+
+.input-bar{
+    width: calc(100% - 20px);
+    height: 30px;
+    position: relative;
+    left: 10px;
+}
+
+textarea{
+    width: calc(100% - 20px);
+    height: calc(100% - 80px);
+    position: relative;
+    left: 10px;
+    resize: none;
+    border: none;
+    outline: none;
+    font-size: 20px;
+}
+
+.btn-blue {
+    width: 100px;
+    height: 30px;
+    position: relative;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: var(--button-color);
+    color: #fff;
+    right: 0;
+}
+
+.btn-blue:hover{
+    background-color: var(--button-hover-color);
+}
+
+.btn-blue:active{
+    background-color: var(--button-color);
+}
+
+.btn-toolbar{
+    position: relative;
+    top: 2px;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    background-color: var(--c0);
+}
+
+.btn-toolbar:hover{
+    background-color: var(--c1);
+}
+
+.btn-toolbar:active{
+    background-color: var(--c0);
+}
